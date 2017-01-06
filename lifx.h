@@ -3,6 +3,21 @@
 
 #define PORT 56700
 
+// HEADER_TYPES
+// https://lan.developer.lifx.com/docs/header-description
+    /*** Device messages ***/
+    //	hd.type = 2;  	/*GetService Message*/
+    //	hd.type = 20;  	/*GetPowerStatus Message*/
+    //	hd.type = 21;  	/*SetPowerStatus Message*/
+    
+    /*** Light messages ***/
+    //	hd.type = 101;  	/*GetLightStatus Message*/
+    //	hd.type = 102;  	/*SetColor Message*/
+    //	hd.type = 116;  	/*GetLightLevel Status Message*/
+    //	hd.type = 117;  	/*SetLightLevel Message*/
+#define HEADER_TYPE_SET_COLOR 102
+#define HEADER_TYPE_SET_POWER 21
+
 /*Struct for LIFX Frame-Header*/
 #pragma pack(push, 1)
 typedef struct {
