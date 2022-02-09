@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Thomas Scheffler.
+ * Copyright (c) 2022, Thomas Scheffler.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +31,48 @@
  * \file
  *         A rudimentary library for controlling LIFX lightbulbs 
  * \author
- *         Thomas Scheffler <scheffler@beuth-hochschule.de>
+ *         Thomas Scheffler <thomas.scheffler@htw-berlin.de>
  */
 
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include "lifx-lib.h"
+
+
+size_t buildLIFX_GetVersionMessage(char* buffer)
+{
+	lx_protocol_header_t hd;
+	initLIFX_Header(&hd, HEADER_TYPE_GET_VERSION);
+
+	// set header size and copy frame into buffer
+	hd.size = sizeof(hd);
+	memcpy(buffer, &hd, sizeof(hd));
+	return sizeof(hd);
+}
+
+size_t buildLIFX_GetPowerMessage(char* buffer)
+{
+	lx_protocol_header_t hd;
+	initLIFX_Header(&hd, HEADER_TYPE_GET_POWER);
+
+	// set header size and copy frame into buffer
+	hd.size = sizeof(hd);
+	memcpy(buffer, &hd, sizeof(hd));
+	return sizeof(hd);
+}
+
+
+size_t buildLIFX_GetLightStatus(char* buffer)
+{
+	lx_protocol_header_t hd;
+	initLIFX_Header(&hd, HEADER_TYPE_GET_LIGHT_STATUS);
+
+	// set header size and copy frame into buffer
+	hd.size = sizeof(hd);
+	memcpy(buffer, &hd, sizeof(hd));
+	return sizeof(hd);
+}
 
 size_t buildLIFX_PowerMessage(char* buffer, uint8_t state)
 {
@@ -48,14 +83,15 @@ size_t buildLIFX_PowerMessage(char* buffer, uint8_t state)
 	initLIFX_Header(&hd, HEADER_TYPE_SET_POWER);
 
 	//---payload---
-	//switch light on or of
+	//switch light on or off
 	if(state == 0) 
 	{
 		lx_powerlevel = 0; //0 - off, 65535 - on
 	} 
 	else if (state==1) 
 	{
-		lx_powerlevel = 65535; //0 - off, 65535 - on
+		//lx_powerlevel = 65535; //0 - off, 65535 - on
+		lx_powerlevel = 1; //0 - off, 1 - on
 	}
 	else  
 	{

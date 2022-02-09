@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Thomas Scheffler.
+ * Copyright (c) 2022, Thomas Scheffler.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
  * \file
  *         A rudimentary library for controlling LIFX lightbulbs 
  * \author
- *         Thomas Scheffler <scheffler@beuth-hochschule.de>
+ *         Thomas Scheffler <thomas.scheffler@htw-berlin.de>
  */
  
 
@@ -48,7 +48,13 @@
 	//	hd.type = 116;  	/*GetLightLevel Status Message*/
 	//	hd.type = 117;  	/*SetLightLevel Message*/
 #define HEADER_TYPE_SET_COLOR 102
-#define HEADER_TYPE_SET_POWER 21
+#define HEADER_TYPE_SET_POWER 21 //0x15
+#define HEADER_TYPE_GET_POWER 20 //0x14
+#define HEADER_TYPE_GET_LIGHT_STATUS 0x65
+//#define HEADER_TYPE_GET_VERSION 0x20 //Get Version
+#define HEADER_TYPE_GET_VERSION 14 //Get Firmware
+
+
 
 /*Struct for LIFX Frame-Header*/
 #pragma pack(push, 1)
@@ -110,6 +116,33 @@ typedef struct {
 */
 size_t buildLIFX_PowerMessage(char* buffer, uint8_t state);
 
+/**
+* Generate a LIFX message that gets the current version of a device.
+*
+*
+* \param buffer An appropriate buffer that stores the compiled message.
+*
+*/
+
+size_t buildLIFX_GetVersionMessage(char* buffer);
+
+/**
+* Generate a LIFX message that gets the current power-status (on/off).
+*
+*
+* \param buffer An appropriate buffer that stores the compiled message.
+*
+*/
+size_t buildLIFX_GetPowerMessage(char* buffer);
+
+/**
+* Generate a LIFX message that gets the current light status.
+*
+*
+* \param buffer An appropriate buffer that stores the compiled message.
+*
+*/
+size_t buildLIFX_GetLightStatus(char* buffer);
 
 /**
 * Generate a LIFX message that sets the color-status of the bulb (color and
@@ -126,6 +159,8 @@ size_t buildLIFX_PowerMessage(char* buffer, uint8_t state);
 * Values are capped at 100(%).
 */
 size_t buildLIFX_ColorMessage(char* buffer, char* color, uint8_t brightness);
+
+
 
 
 /**
