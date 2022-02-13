@@ -527,7 +527,7 @@ function analyse(buffer, pinfo, tree)
 	-- LE maths on the packet length
 	local lifxlength = buffer(0,2):le_uint()
 
-	local subtree = tree:add(buffer(0, lifxlength), "LIFX packet")
+	local subtree = tree:add(lifx, buffer(0, lifxlength), "LIFX packet")
 	subtree:add_le(F.size, buffer(0,2))
 	subtree:add(F.protocol, buffer(2,2))
 	subtree:add(F.reserved, buffer(4,4))
